@@ -226,7 +226,14 @@ class Crawler():
 			elif link.startswith(("mailto", "tel")):
 				continue
 			elif not link.startswith(('http', "https")):
-				link = url.scheme + '://' + url[1] + '/' + link
+				path_part = url[2]
+				path_part = '/'.join(url[2].split('/')[:-1])
+				if path_part.startswith('/'):
+					path_part = path_part[1:]
+				path_part += '/'
+				if path_part in ('/', '//'):
+					path_part = ''
+				link = url.scheme + '://' + url[1] + '/' + path_part + link
 
 			# Remove the anchor part if needed
 			if "#" in link:
